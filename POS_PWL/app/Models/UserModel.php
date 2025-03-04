@@ -11,4 +11,6 @@ class UserModel extends Model
 
     protected $table = 'm_user';
     protected $primatyKey = 'user_id';
+
+    protected $filelable = ['level_id', 'username', 'nama'];
 }
