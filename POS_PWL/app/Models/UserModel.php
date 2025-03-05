@@ -10,7 +10,7 @@ class UserModel extends Model
     use HasFactory;
 
     protected $table = 'm_user';
-    protected $primatyKey = 'user_id';
+    protected $primaryKey = 'user_id';
 
     protected $filelable = ['level_id', 'username', 'nama'];
 }
