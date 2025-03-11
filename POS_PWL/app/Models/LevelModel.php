@@ -9,5 +9,5 @@ class LevelModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'm_user';
+    protected $table = 'm_level';
 }
