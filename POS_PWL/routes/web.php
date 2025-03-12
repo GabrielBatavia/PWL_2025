@@ -46,3 +46,24 @@ Route::group(['prefix' => 'user'], function () {
     Route::put('/{id}', [UserController::class, 'update']);       // menyimpan perubahan data user
     Route::delete('/{id}', [UserController::class, 'destroy']);   // menghapus data user
 });
+
+Route::prefix('level')->group(function() {
+    Route::get('/',          [LevelController::class, 'index']);   // GET /level
+    Route::get('/create',    [LevelController::class, 'create']);  // GET /level/create
+    Route::post('/',         [LevelController::class, 'store']);   // POST /level
+    Route::get('/{id}',      [LevelController::class, 'show']);    // GET /level/{id}
+    Route::get('/{id}/edit', [LevelController::class, 'edit']);    // GET /level/{id}/edit
+    Route::put('/{id}',      [LevelController::class, 'update']);  // PUT /level/{id}
+    Route::delete('/{id}',   [LevelController::class, 'destroy']); // DELETE /level/{id}
+});
+
+Route::prefix('kategori')->group(function() {
+    Route::get('/',           [KategoriController::class, 'index'])->name('kategori.index');
+    Route::post('/list',      [KategoriController::class, 'list'])->name('kategori.list');
+    Route::get('/create',     [KategoriController::class, 'create'])->name('kategori.create');
+    Route::post('/',          [KategoriController::class, 'store'])->name('kategori.store');
+    Route::get('/{id}',       [KategoriController::class, 'show'])->name('kategori.show');
+    Route::get('/{id}/edit',  [KategoriController::class, 'edit'])->name('kategori.edit');
+    Route::put('/{id}',       [KategoriController::class, 'update'])->name('kategori.update');
+    Route::delete('/{id}',    [KategoriController::class, 'destroy'])->name('kategori.destroy');
+});
