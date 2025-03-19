@@ -17,13 +17,13 @@ class SupplierController extends Controller
         $activeMenu = 'supplier';
 
         // Breadcrumb
-        $breadcrumb = (object)[
+        $breadcrumb = (object) [
             'title' => 'Data Supplier',
-            'list'  => ['Data Barang','Data Supplier']
+            'list'  => ['Data Barang', 'Data Supplier']
         ];
 
         // Tampilkan view index; Datatables ambil data via route supplier/list
-        return view('supplier.index', compact('activeMenu','breadcrumb'));
+        return view('supplier.index', compact('activeMenu', 'breadcrumb'));
     }
 
     /**
@@ -31,12 +31,18 @@ class SupplierController extends Controller
      */
     public function list(Request $request)
     {
-        // Ambil data
-        $suppliers = SupplierModel::select('id','nama_supplier','alamat','created_at');
+        // Ambil data, lalu alias-kan kolom sesuai kebutuhan DataTables
+        $suppliers = SupplierModel::select(
+            'supplier_id as id',
+            'supplier_nama as nama_supplier',
+            'supplier_alamat as alamat',
+            'created_at'
+        );
 
         return DataTables::of($suppliers)
-            ->addIndexColumn() 
+            ->addIndexColumn()
             ->addColumn('aksi', function($row){
+                // Di sini kita sudah punya $row->id
                 $btn  = '<a href="'.url('supplier/'.$row->id).'" class="btn btn-info btn-sm">Detail</a> ';
                 $btn .= '<a href="'.url('supplier/'.$row->id.'/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
                 $btn .= '<form action="'.url('supplier/'.$row->id).'" method="POST" class="d-inline">'
@@ -54,7 +60,7 @@ class SupplierController extends Controller
     public function create()
     {
         $activeMenu = 'supplier';
-        $breadcrumb = (object)[
+        $breadcrumb = (object) [
             'title' => 'Tambah Data Supplier',
             'list'  => ['Data Barang','Data Supplier','Tambah']
         ];
@@ -67,16 +73,16 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi form
+        // Validasi form (sesuaikan name input di Blade: nama_supplier, alamat)
         $request->validate([
             'nama_supplier' => 'required|max:100',
             'alamat'        => 'required'
         ]);
 
-        // Simpan 
+        // Simpan ke DB (mapping ke kolom aslinya)
         SupplierModel::create([
-            'nama_supplier' => $request->nama_supplier,
-            'alamat'        => $request->alamat
+            'supplier_nama'   => $request->nama_supplier,
+            'supplier_alamat' => $request->alamat
         ]);
 
         return redirect('supplier')->with('success','Data supplier berhasil ditambahkan!');
@@ -88,7 +94,7 @@ class SupplierController extends Controller
     public function show($id)
     {
         $activeMenu = 'supplier';
-        $breadcrumb = (object)[
+        $breadcrumb = (object) [
             'title' => 'Detail Supplier',
             'list'  => ['Data Barang','Data Supplier','Detail']
         ];
@@ -103,7 +109,7 @@ class SupplierController extends Controller
     public function edit($id)
     {
         $activeMenu = 'supplier';
-        $breadcrumb = (object)[
+        $breadcrumb = (object) [
             'title' => 'Edit Data Supplier',
             'list'  => ['Data Barang','Data Supplier','Edit']
         ];
@@ -117,6 +123,7 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Validasi form
         $request->validate([
             'nama_supplier' => 'required|max:100',
             'alamat'        => 'required'
@@ -127,9 +134,10 @@ class SupplierController extends Controller
             return redirect('supplier')->with('error','Data tidak ditemukan!');
         }
 
+        // Update kolom DB dengan field dari request
         $supplier->update([
-            'nama_supplier' => $request->nama_supplier,
-            'alamat'        => $request->alamat
+            'supplier_nama'   => $request->nama_supplier,
+            'supplier_alamat' => $request->alamat
         ]);
 
         return redirect('supplier')->with('success','Data supplier berhasil diupdate!');

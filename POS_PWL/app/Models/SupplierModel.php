@@ -10,11 +10,11 @@ class SupplierModel extends Model
     use HasFactory;
 
     protected $table = 'm_supplier';
-    protected $primaryKey = 'id';  // default 'id' sudah betul, tapi tuliskan untuk jelas
-    public $timestamps = true;     // agar Laravel mengisi created_at & updated_at
+    protected $primaryKey = 'supplier_id'; 
+    public $timestamps = true; // agar Laravel mengisi created_at & updated_at
 
     protected $fillable = [
-        'nama_supplier',
-        'alamat'
+        'supplier_nama',
+        'supplier_alamat'
     ];
 }

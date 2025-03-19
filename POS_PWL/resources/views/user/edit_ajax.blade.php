@@ -113,7 +113,7 @@
                         data: $(form).serialize(),
                         success: function(response) {
                             // Tutup modal
-                            $('#modal-master').modal('hide');
+                            $('#myModal').modal('hide');
                             // Reload DataTables (contoh variabel dataUser)
                             dataUser.ajax.reload();
                             // Tampilkan notifikasi sukses (SweetAlert)

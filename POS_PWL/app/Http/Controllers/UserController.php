@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LevelModel;
+use App\Models\User;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -55,7 +56,7 @@ class UserController extends Controller
                 */
     
                 // Versi tombol aksi menggunakan modal:
-                $btn = '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/show_ajax').'\', \'Detail User\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn = '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/show').'\', \'Detail User\')" class="btn btn-info btn-sm">Detail</button> ';
                 $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/edit_ajax').'\', \'Edit User\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/delete_ajax').'\', \'Delete User\')" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\')">Hapus</button>';
     
@@ -293,6 +294,44 @@ class UserController extends Controller
         }
 
         // Jika bukan request AJAX, redirect ke halaman utama (atau sesuai kebutuhan)
+        return redirect('/');
+    }
+
+    public function confirm_ajax($id)
+    {
+        // Ambil data user berdasarkan ID
+        $user = UserModel::find($id);
+
+        // Kembalikan ke view 'user.confirm_ajax' dengan data user
+        return view('user.confirm_ajax', ['user' => $user]);
+    }
+
+
+    public function delete_ajax(Request $request, $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            
+            $user = UserModel::find($id);
+
+            try{ if ($user) {
+                $user->delete();
+                return response()->json([
+                    'status'  => true,
+                    'message' => 'Data berhasil dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+            } catch (\Illuminate\Database\QueryException $e) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Data user gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini'
+                ]);
+            }
+        }
         return redirect('/');
     }
 

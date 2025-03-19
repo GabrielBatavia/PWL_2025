@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class KategoriSeeder extends Seeder
 {
@@ -13,31 +13,33 @@ class KategoriSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('m_kategori')->insert([
+        $data = [
             [
-                'kategori_kode' => 'KTG001',
-                'kategori_nama' => 'Pupuk Organik',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'kategori_id' => 1,
+                'kategori_kode' => 'FOOD',
+                'kategori_nama' => 'Makanan',
             ],
             [
-                'kategori_kode' => 'KTG002',
-                'kategori_nama' => 'Pestisida',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'kategori_id' => 2,
+                'kategori_kode' => 'DRINK',
+                'kategori_nama' => 'Minuman',
             ],
             [
-                'kategori_kode' => 'KTG003',
-                'kategori_nama' => 'Alat Pertanian',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'kategori_id' => 3,
+                'kategori_kode' => 'ELEC',
+                'kategori_nama' => 'Elektronik',
             ],
             [
-                'kategori_kode' => 'KTG004',
-                'kategori_nama' => 'Benih Unggul',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'kategori_id' => 4,
+                'kategori_kode' => 'FASH',
+                'kategori_nama' => 'Fashion',
             ],
-        ]);
+            [
+                'kategori_id' => 5,
+                'kategori_kode' => 'FURN',
+                'kategori_nama' => 'Furniture',
+            ],
+        ];
+        DB::table('m_kategori')->insert($data);
     }
 }
