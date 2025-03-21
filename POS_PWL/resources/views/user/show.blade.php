@@ -12,7 +12,7 @@
             <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
             Data yang Anda cari tidak ditemukan.
         </div>
-        @else
+        @elsez
         <table class="table table-bordered table-striped table-hover table-sm">
             <tr>
                 <th>ID</th>

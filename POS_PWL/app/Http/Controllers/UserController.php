@@ -250,8 +250,6 @@ class UserController extends Controller
             // Aturan validasi
             $rules = [
                 'level_id' => 'required|integer',
-                // Contoh: validasi unique untuk kolom username, 
-                // mengabaikan user dengan ID tertentu (agar tidak bentrok jika username sama dengan dirinya sendiri)
                 'username' => 'required|max:20|unique:m_user,username,' . $id . ',user_id',
                 'nama'     => 'required|max:100',
                 'password' => 'nullable|min:6|max:20'

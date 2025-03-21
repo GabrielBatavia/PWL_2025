@@ -1,54 +1,86 @@
-@extends('layouts.template') 
-{{-- misal Anda punya layouts/template.blade.php --}}
+@extends('layouts.template')
 
 @section('content')
-<div class="card card-outline card-primary">
-  <div class="card-header">
-    <h3 class="card-title">Data Level</h3>
-    <div class="card-tools">
-      <a href="{{ url('level/create') }}" class="btn btn-sm btn-primary">Tambah</a>
-    </div>
-  </div>
-  <div class="card-body">
-    {{-- Tampilkan pesan sukses/error --}}
-    @if(session('success'))
-      <div class="alert alert-success">{{ session('success') }}</div>
-    @elseif(session('error'))
-      <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
-
-    <table class="table table-bordered table-sm">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Kode</th>
-          <th>Nama Level</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        @forelse($data as $key => $lvl)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td>{{ $lvl->level_kode }}</td>
-          <td>{{ $lvl->level_nama }}</td>
-          <td>
-            <a href="{{ url('level/'.$lvl->level_id) }}" class="btn btn-info btn-sm">Detail</a>
-            <a href="{{ url('level/'.$lvl->level_id.'/edit') }}" class="btn btn-warning btn-sm">Edit</a>
-            <form action="{{ url('level/'.$lvl->level_id) }}" method="POST" class="d-inline">
-              @csrf
-              @method('DELETE')
-              <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?');">Hapus</button>
-            </form>
-          </td>
-        </tr>
-        @empty
-        <tr>
-          <td colspan="4">Tidak ada data</td>
-        </tr>
-        @endforelse
-      </tbody>
-    </table>
-  </div>
-</div>
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h3 class="card-title">{{ $page->title }}</h3>
+            <div class="card-tools">
+                <a class="btn btn-sm btn-primary mt-1" href="{{ url('level/create') }}">Tambah</a>
+                <button onclick="modalAction('{{ url('level/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah
+                    Ajax</button>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+            <table class="table table-bordered table-striped table-hover table-sm" id="table_level">
+                <thead>
+                    <tr>
+                        <th>ID Level</th>
+                        <th>Kode Level</th>
+                        <th>Nama Level</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static"
+            data-keyboard="false" data-width="75%" aria-hidden="true"></div>
 @endsection
+
+    @push('css')
+    @endpush
+
+    @push('js')
+        <script>
+            function modalAction(url = '') {
+                $('#myModal').load(url, function () {
+                    $('#myModal').modal('show');
+                });
+            }
+            var dataLevel
+            $(document).ready(function () {
+                dataLevel = $('#table_level').DataTable({
+                    // serverSide: true, jika ingin menggunakan server side processing 
+                    serverSide: true,
+                    ajax: {
+                        "url": "{{ url('level/list') }}",
+                        "dataType": "json",
+                        "type": "POST",
+                    },
+                    columns: [
+                        {  // nomor urut dari laravel datatable addIndexColumn() 
+                            data: "DT_RowIndex",
+                            className: "text-center",
+                            orderable: false,
+                            searchable: false
+                        }, {
+                            data: "level_kode",
+                            className: "",
+                            // orderable: true, jika ingin kolom ini bisa diurutkan  
+                            orderable: true,
+                            // searchable: true, jika ingin kolom ini bisa dicari 
+                            searchable: true
+                        }, {
+                            data: "level_nama",
+                            className: "",
+                            orderable: true,
+                            searchable: true
+                        }, {
+                            data: "aksi",
+                            className: "",
+                            orderable: false,
+                            searchable: false
+                        }
+                    ]
+                });
+                $('#level_id').on('change', function () {
+                    dataLevel.ajax.reload();
+                });
+            }); 
+        </script>
+    @endpush
