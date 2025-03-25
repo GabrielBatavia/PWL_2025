@@ -25,10 +25,10 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/', [WelcomeController::class, 'index']);
 
     // ======================
-    // ADMINISTRATOR (ADM)
+    // ADMINISTRATOR (ADM) - FULL ACCESS
     // ======================
     Route::middleware(['authorize:ADM'])->group(function() {
-        // User Management
+        // User Management - Admin only
         Route::prefix('user')->group(function() {
             Route::get('/', [UserController::class, 'index']);
             Route::post('/list', [UserController::class, 'list']);
@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function() {
             Route::delete('/{id}', [UserController::class, 'destroy']);
         });
 
-        // Level Management
+        // Level Management - Admin only
         Route::prefix('level')->group(function() {
             Route::get('/', [LevelController::class, 'index']);
             Route::post('/list', [LevelController::class, 'list']);
@@ -66,9 +66,9 @@ Route::middleware(['auth'])->group(function() {
     });
 
     // ======================
-    // MANAGER (MMG)
+    // MANAGEMENT ROUTES (ADMIN + MANAGER)
     // ======================
-    Route::middleware(['authorize:MMG'])->group(function() {
+    Route::middleware(['authorize:ADM,MMG'])->group(function() {
         // Supplier Management
         Route::prefix('supplier')->group(function() {
             Route::get('/', [SupplierController::class, 'index']);
@@ -86,46 +86,62 @@ Route::middleware(['auth'])->group(function() {
             Route::delete('/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']);
             Route::delete('/{id}', [SupplierController::class, 'destroy']);
         });
-    });
 
-    // ======================
-    // STAFF (STF)
-    // ======================
-    Route::middleware(['authorize:STF'])->group(function() {
-        // Kategori Management
-        Route::prefix('kategori')->group(function() {
-            Route::get('/', [KategoriController::class, 'index']);
-            Route::post('/list', [KategoriController::class, 'list']);
-            Route::get('/create', [KategoriController::class, 'create']);
-            Route::post('/', [KategoriController::class, 'store']);
-            Route::get('/create_ajax', [KategoriController::class, 'create_ajax']);
-            Route::post('/ajax', [KategoriController::class, 'store_ajax']);
-            Route::get('/{id}', [KategoriController::class, 'show']);
-            Route::get('/{id}/edit', [KategoriController::class, 'edit']);
-            Route::put('/{id}', [KategoriController::class, 'update']);
-            Route::get('/{id}/edit_ajax', [KategoriController::class, 'edit_ajax']);
-            Route::put('/{id}/update_ajax', [KategoriController::class, 'update_ajax']);
-            Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']);
-            Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']);
-            Route::delete('/{id}', [KategoriController::class, 'destroy']);
-        });
-
-        // Barang Management
+        // Barang Management - Read only for manager
         Route::prefix('barang')->group(function() {
             Route::get('/', [BarangController::class, 'index']);
             Route::post('/list', [BarangController::class, 'list']);
-            Route::get('/create', [BarangController::class, 'create']);
-            Route::post('/', [BarangController::class, 'store']);
-            Route::get('/create_ajax', [BarangController::class, 'create_ajax']);
-            Route::post('/ajax', [BarangController::class, 'store_ajax']);
             Route::get('/{id}', [BarangController::class, 'show']);
-            Route::get('/{id}/edit', [BarangController::class, 'edit']);
-            Route::put('/{id}', [BarangController::class, 'update']);
-            Route::get('/{id}/edit_ajax', [BarangController::class, 'edit_ajax']);
-            Route::put('/{id}/update_ajax', [BarangController::class, 'update_ajax']);
-            Route::get('/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']);
-            Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);
-            Route::delete('/{id}', [BarangController::class, 'destroy']);
+            
+            // Restrict create/edit/delete to admin only
+            Route::middleware(['authorize:ADM'])->group(function() {
+                Route::get('/create', [BarangController::class, 'create']);
+                Route::post('/', [BarangController::class, 'store']);
+                Route::get('/create_ajax', [BarangController::class, 'create_ajax']);
+                Route::post('/ajax', [BarangController::class, 'store_ajax']);
+                Route::get('/{id}/edit', [BarangController::class, 'edit']);
+                Route::put('/{id}', [BarangController::class, 'update']);
+                Route::get('/{id}/edit_ajax', [BarangController::class, 'edit_ajax']);
+                Route::put('/{id}/update_ajax', [BarangController::class, 'update_ajax']);
+                Route::get('/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']);
+                Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);
+                Route::delete('/{id}', [BarangController::class, 'destroy']);
+            });
+        });
+    });
+
+    // ======================
+    // STAFF (STF) ROUTES
+    // ======================
+    Route::middleware(['authorize:STF'])->group(function() {
+        // Kategori Management - Read only for staff
+        Route::prefix('kategori')->group(function() {
+            Route::get('/', [KategoriController::class, 'index']);
+            Route::post('/list', [KategoriController::class, 'list']);
+            Route::get('/{id}', [KategoriController::class, 'show']);
+        });
+    });
+
+    // ======================
+    // ADMIN + STAFF ROUTES
+    // ======================
+    Route::middleware(['authorize:ADM,STF'])->group(function() {
+        // Kategori Management - Full access for admin, limited for staff
+        Route::prefix('kategori')->group(function() {
+            // Staff can only access these if also authorized
+            Route::middleware(['authorize:ADM'])->group(function() {
+                Route::get('/create', [KategoriController::class, 'create']);
+                Route::post('/', [KategoriController::class, 'store']);
+                Route::get('/create_ajax', [KategoriController::class, 'create_ajax']);
+                Route::post('/ajax', [KategoriController::class, 'store_ajax']);
+                Route::get('/{id}/edit', [KategoriController::class, 'edit']);
+                Route::put('/{id}', [KategoriController::class, 'update']);
+                Route::get('/{id}/edit_ajax', [KategoriController::class, 'edit_ajax']);
+                Route::put('/{id}/update_ajax', [KategoriController::class, 'update_ajax']);
+                Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']);
+                Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']);
+                Route::delete('/{id}', [KategoriController::class, 'destroy']);
+            });
         });
     });
 });
