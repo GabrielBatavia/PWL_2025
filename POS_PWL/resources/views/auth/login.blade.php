@@ -54,6 +54,10 @@
           <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block">Sign In</button>
           </div>
+          <!-- Tambahkan di bagian bawah form login -->
+          <p class="mb-0">
+            <a href="{{ url('register') }}" class="text-center">Belum punya akun? Daftar disini</a>
+          </p>
         </div>
       </form>
     </div>
