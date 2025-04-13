@@ -91,6 +91,7 @@ Route::middleware(['auth'])->group(function() {
             Route::delete('/{id}', [SupplierController::class, 'destroy']);
         });
 
+        Route::middleware(['authorize:ADM'])->group(function() {
         // Barang Management - Read only for manager
         Route::prefix('barang')->group(function() {
             Route::get('/', [BarangController::class, 'index']);
@@ -98,7 +99,7 @@ Route::middleware(['auth'])->group(function() {
             Route::get('/{id}', [BarangController::class, 'show']);
             
             // Restrict create/edit/delete to admin only
-            Route::middleware(['authorize:ADM'])->group(function() {
+            
                 Route::get('/create', [BarangController::class, 'create']);
                 Route::post('/', [BarangController::class, 'store']);
                 Route::get('/create_ajax', [BarangController::class, 'create_ajax']);
@@ -109,6 +110,8 @@ Route::middleware(['auth'])->group(function() {
                 Route::put('/{id}/update_ajax', [BarangController::class, 'update_ajax']);
                 Route::get('/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']);
                 Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);
+                Route::get('/import',[BarangController::class, 'import']); // ajax form upload excel
+                Route::post('/import_ajax', [BarangController::class, 'import_ajax']); // ajax upload excel
                 Route::delete('/{id}', [BarangController::class, 'destroy']);
             });
         });

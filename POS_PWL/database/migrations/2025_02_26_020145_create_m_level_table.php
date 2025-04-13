@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if(Schema::hasTable('m_level')) return;
         Schema::create('m_level', function (Blueprint $table) {
             $table->id('level_id');
             $table->string('level_kode',10)->unique();
