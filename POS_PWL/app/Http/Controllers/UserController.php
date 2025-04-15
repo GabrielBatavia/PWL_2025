@@ -8,6 +8,7 @@ use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -333,6 +334,82 @@ class UserController extends Controller
         return redirect('/');
     }
 
+    public function import() 
+    { 
+        return view('user.import'); 
+    }
+
+    public function import_ajax(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'file_level' => ['required', 'file', 'mimes:xlsx', 'max:1024']
+            ];
     
+            $validator = Validator::make($request->all(), $rules);
+    
+            if ($validator->fails()) {
+                return response()->json([
+                    'status'   => false,
+                    'message'  => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+    
+            $file = $request->file('file_level');
+    
+            // Tambah pengecekan validitas file
+            if (!$file->isValid()) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'File tidak valid.'
+                ]);
+            }
+    
+            try {
+                // Gunakan getPathname() alih-alih getRealPath()
+                $reader = IOFactory::createReader('Xlsx');
+                $reader->setReadDataOnly(true);
+                $spreadsheet = $reader->load($file->getPathname()); // <-- Perubahan di sini
+                $sheet = $spreadsheet->getActiveSheet();
+                $data = $sheet->toArray(null, false, true, true);
+    
+                $insert = [];
+                if (count($data) > 1) {
+                    foreach ($data as $baris => $value) {
+                        if ($baris > 1) { // Skip header (baris 1)
+                            $insert[] = [
+                                'name' => $value['A'],
+                                'email' => $value['B'],
+                                'password' => $value['C'],
+                                'created_at' => now(),
+                            ];
+                        }
+                    }
+    
+                    if (count($insert) > 0) {
+                        LevelModel::insertOrIgnore($insert);
+                    }
+    
+                    return response()->json([
+                        'status'  => true,
+                        'message' => 'Data berhasil diimport'
+                    ]);
+                } else {
+                    return response()->json([
+                        'status'  => false,
+                        'message' => 'Tidak ada data yang diimport'
+                    ]);
+                }
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Gagal memproses file: ' . $e->getMessage()
+                ]);
+            }
+        }
+    
+        return redirect('/');
+    }
 
 }

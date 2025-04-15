@@ -47,6 +47,8 @@ Route::middleware(['auth'])->group(function() {
             Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax']);
             Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']);
+            Route::get('/import',[UserController::class, 'import']); 
+            Route::post('/import_ajax', [UserController::class, 'import_ajax']); 
             Route::delete('/{id}', [UserController::class, 'destroy']);
         });
 
@@ -65,6 +67,8 @@ Route::middleware(['auth'])->group(function() {
             Route::put('/{id}/update_ajax', [LevelController::class, 'update_ajax']);
             Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']);
+            Route::get('/import',[LevelController::class, 'import']); 
+            Route::post('/import_ajax', [LevelController::class, 'import_ajax']); 
             Route::delete('/{id}', [LevelController::class, 'destroy']);
         });
     });
@@ -121,7 +125,7 @@ Route::middleware(['auth'])->group(function() {
     // ======================
     // STAFF (STF) ROUTES
     // ======================
-    Route::middleware(['authorize:STF'])->group(function() {
+    Route::middleware(['authorize:ADM,STF'])->group(function() {
         // Kategori Management - Read only for staff
         Route::prefix('kategori')->group(function() {
             Route::get('/', [KategoriController::class, 'index']);
@@ -148,6 +152,8 @@ Route::middleware(['auth'])->group(function() {
                 Route::put('/{id}/update_ajax', [KategoriController::class, 'update_ajax']);
                 Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']);
                 Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']);
+                Route::get('/import',[KategoriController::class, 'import']); // ajax form upload excel
+                Route::post('/import_ajax', [KategoriController::class, 'import_ajax']);
                 Route::delete('/{id}', [KategoriController::class, 'destroy']);
             });
         });
