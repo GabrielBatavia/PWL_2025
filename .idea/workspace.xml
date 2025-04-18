@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="377642f5-3e27-4c06-bb7e-25a54417bf10" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/POS_PWL/app/Http/Controllers/KategoriController.php" beforeDir="false" afterPath="$PROJECT_DIR$/POS_PWL/app/Http/Controllers/KategoriController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/POS_PWL/app/Http/Controllers/LevelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/POS_PWL/app/Http/Controllers/LevelController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/POS_PWL/app/Http/Controllers/SupplierController.php" beforeDir="false" afterPath="$PROJECT_DIR$/POS_PWL/app/Http/Controllers/SupplierController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/POS_PWL/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/POS_PWL/app/Http/Controllers/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/POS_PWL/resources/views/kategori/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/POS_PWL/resources/views/kategori/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/POS_PWL/resources/views/level/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/POS_PWL/resources/views/level/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/POS_PWL/resources/views/supplier/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/POS_PWL/resources/views/supplier/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/POS_PWL/resources/views/user/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/POS_PWL/resources/views/user/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/POS_PWL/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/POS_PWL/routes/web.php" afterDir="false" />
-    </list>
+    <list default="true" id="377642f5-3e27-4c06-bb7e-25a54417bf10" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,9 +10,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2vmPBQJJWBczfSPiIjyCikQP2jw" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -33,6 +23,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/GabrielBatavia/Documents/github_project/kai",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -54,6 +45,7 @@
       <option name="presentableId" value="Default" />
       <updated>1744747142279</updated>
       <workItem from="1744747143825" duration="7000" />
+      <workItem from="1744749038546" duration="47000" />
     </task>
     <servers />
   </component>
