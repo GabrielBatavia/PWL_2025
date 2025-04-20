@@ -17,4 +17,30 @@ class WelcomeController extends Controller
 
         return view('welcome', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
+
+    public function update_profile(Request $request)
+    {
+        $request->validate([
+            'profileImage' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $user = auth()->user();
+        $username = $user->username;
+
+        // Define the storage path for the profile image
+        $imagePath = public_path('Adminlte/dist/img/');
+        $imageName = $username . '.png';
+
+        if (file_exists($imagePath . $imageName)) {
+            unlink($imagePath . $imageName);
+        }
+
+        // Move the uploaded file to the target directory
+        $request->profileImage->move($imagePath, $imageName);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Profile image updated successfully',
+        ]);
+    }
 }
