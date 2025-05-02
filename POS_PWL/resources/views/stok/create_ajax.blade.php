@@ -45,7 +45,7 @@
                 <!-- Tanggal Stok Masuk -->
                 <div class="form-group">
                     <label>Tanggal Masuk</label>
-                    <input type="date" name="stok_tanggal_masuk" id="stok_tanggal_masuk" class="form-control" required>
+                    <input type="date" name="stock_tanggal" id="stock_tanggal" class="form-control" required>
                     <small id="error-stok_tanggal_masuk" class="error-text form-text text-danger"></small>
                 </div>
                 <!-- Jumlah Stok -->

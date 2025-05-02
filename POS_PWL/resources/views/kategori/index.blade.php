@@ -4,13 +4,13 @@
     <div class="card card-outline card-primary">
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
+
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('kategori/create') }}">Tambah</a>
-                <button onclick="modalAction('{{ url('kategori/import') }}')" class="btn btn-info">Import Kategori</button> 
-                <a href="{{ url('/kategori/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export Kategori</a>
-                <a href="{{ url('/kategori/export_pdf') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export PDF</a>
-                <button onclick="modalAction('{{ url('kategori/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah
-                    Ajax</button>
+                <button onclick="modalAction('{{ url('/kategori/create') }}')" class="btn btn-success"> <i class="fa fa-plus"></i> Tambah</button>
+                <button onclick="modalAction('{{ url('/kategori/import') }}')" class="btn btn-info"> <i class="fa fa-file-import"></i> Import Stok</button>
+                <a href="{{ url('/kategori/export_excel') }}" class="btn btn-warning"><i class="fas fa-file-excel"></i> Export Excel</a>
+                <a href="{{ url('/kategori/export_pdf') }}" class="btn btn-warning"><i class="fa fa-file-pdf"></i> Export Stok</a>
+                <button onclick="modalAction('{{ url('/kategori/create_ajax') }}')" class="btn btn-success"> <i class="fa fa-plus"></i> Tambah Ajax</button>
             </div>
         </div>
         <div class="card-body">
