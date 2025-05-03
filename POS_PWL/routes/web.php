@@ -20,6 +20,7 @@ Route::pattern('id','[0-9]+');
 Route::get('/', [DashboardController::class,'index'])->middleware('auth')->name('dashboard');
 Route::post('/welcome/updateProfileImage', [WelcomeController::class, 'update_profile']);
 
+
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
 
