@@ -16,13 +16,17 @@ class RegisterController extends Controller
             'username' => 'required',
             'nama' => 'required',
             'password' => 'required|min:5|confirmed',
-            'level_id' => 'required'
+            'level_id' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // if validations fails
+        // if validation fails
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+
+        $image = $request->file('image');
+        $image->storeAs('public/posts', $image->hashName());
 
         // create user
         $user = UserModel::create([
@@ -30,9 +34,10 @@ class RegisterController extends Controller
             'nama' => $request->nama,
             'password' => bcrypt($request->password),
             'level_id' => $request->level_id,
+            'image' => $image->hashName()
         ]);
 
-        // return response JSON if user is created
+        // return response JSON user is created
         if ($user) {
             return response()->json([
                 'success' => true,
@@ -40,7 +45,7 @@ class RegisterController extends Controller
             ], 201);
         }
 
-        // return JSON if process insert failed
+        // return JSON process insert failed
         return response()->json([
             'success' => false,
         ], 409);

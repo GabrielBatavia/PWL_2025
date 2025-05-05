@@ -3,33 +3,40 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PenjualanModel extends Model
 {
-    use HasFactory;
-
-    //==========================================Jobsheet 3 Praktikum 6=======================================
     protected $table = 't_penjualan';
     protected $primaryKey = 'penjualan_id';
 
-    //==========================================Jobsheet 4 Praktikum 1=======================================
     protected $fillable = [
         'user_id',
         'pembeli',
         'penjualan_kode',
-        'penjualan_tanggal'
+        'penjualan_tanggal',
     ];
 
-
-    //=========================================Jobsheet 4 Praktikum 2.7=======================================
-    public function user(): BelongsTo {
-        return $this->belongsTo(UserModel::class, 'user_id', 'user_id');
+    /**
+     * Relasi ke detail penjualan (t_penjualan_detail)
+     */
+    public function details()
+    {
+        return $this->hasMany(
+            \App\Models\PenjualanDetailModel::class,
+            'penjualan_id',   // FK in t_penjualan_detail
+            'penjualan_id'    // PK in t_penjualan
+        );
     }
 
-    public function penjualanDetail(): HasMany {
-        return $this->hasMany(PenjualanDetailModel::class, 'penjualan_id', 'penjualan_id');
+    /**
+     * (Opsional) relasi ke user, kalau butuh
+     */
+    public function user()
+    {
+        return $this->belongsTo(
+            \App\Models\UserModel::class,
+            'user_id',
+            'user_id'
+        );
     }
 }
